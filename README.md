@@ -2,7 +2,17 @@
 
 Sebuah aplikasi e-commerce seluler native Android yang dibangun menggunakan **Kotlin** dan **Jetpack Compose**. Aplikasi ini dirancang dengan arsitektur multi-peran yang kompleks untuk melayani berbagai jenis pengguna.
 
-Seluruh backend aplikasi ini didukung oleh **Firebase**, memanfaatkan **Firebase Realtime Database** untuk persistensi data (produk, pengguna, pesanan), **Firebase Authentication** untuk manajemen pengguna, dan **Firebase Storage** (diasumsikan) untuk unggahan gambar produk.
+Seluruh backend aplikasi ini didukung penuh oleh **Firebase**, memanfaatkan:
+* **Firebase Realtime Database** untuk persistensi semua data (produk, pengguna, pesanan, dll.).
+* **Firebase Authentication** untuk manajemen login dan registrasi pengguna.
+
+## ☁️ Manajemen Gambar dengan Cloudinary
+
+Aplikasi ini **tidak** menggunakan Firebase Storage untuk gambar. Sebaliknya, aplikasi ini mengadopsi alur kerja yang efisien:
+
+1.  Gambar di-hosting di layanan **Cloudinary**.
+2.  **URL publik** dari gambar di Cloudinary tersebut disimpan sebagai `String` di Firebase Realtime Database bersama dengan data produk lainnya.
+3.  Aplikasi kemudian menggunakan *library* **Coil** untuk memuat dan menampilkan gambar secara dinamis dari URL Cloudinary tersebut.
 
 ## ✨ Fitur Utama
 
@@ -19,7 +29,7 @@ Aplikasi ini menyediakan fungsionalitas yang berbeda berdasarkan peran pengguna:
 * **Wishlist & Review:** Menyimpan produk yang diinginkan dan memberikan ulasan.
 
 ### 📦 Peran Pengelola (Penjual)
-* **Manajemen Produk:** Menambah dan mengedit produk di Firebase.
+* **Manajemen Produk:** Menambah dan mengedit produk di Firebase, termasuk menyediakan **URL Cloudinary untuk gambar produk**.
 * **Manajemen Pesanan:** Melihat dan mengelola pesanan yang masuk dari Firebase.
 
 ### ⚙️ Peran Admin
@@ -35,11 +45,11 @@ Aplikasi ini menyediakan fungsionalitas yang berbeda berdasarkan peran pengguna:
 * **Bahasa:** Kotlin
 * **UI:** Jetpack Compose
 * **Backend & Database:** **Firebase**
-    * **Firebase Realtime Database** (untuk data utama)
-    * **Firebase Authentication** (untuk pengguna)
-    * **Firebase Storage** (untuk gambar/file)
+    * **Firebase Realtime Database** (untuk semua data aplikasi)
+    * **Firebase Authentication** (untuk manajemen pengguna)
+* **Image Hosting:** **Cloudinary** (disimpan sebagai URL)
+* **Image Loading:** **Coil** (untuk memuat gambar dari URL)
 * **Navigasi:** Compose Navigation
-* **Image Loading:** Coil
 
 ## 🚀 Instalasi dan Penyiapan
 
@@ -47,7 +57,7 @@ Untuk menjalankan proyek ini secara lokal, ikuti langkah-langkah berikut:
 
 1.  **Clone Repositori**
     ```bash
-    git clone [URL_REPOSITORI_ANDA_DI_SINI]
+    git clone [https://github.com/faizaqeel07/ecommerceproject]
     ```
 2.  **Buka di Android Studio**
     * Buka Android Studio dan pilih "Open an existing project".
@@ -62,7 +72,6 @@ Untuk menjalankan proyek ini secara lokal, ikuti langkah-langkah berikut:
     * Di Firebase Console, aktifkan layanan berikut:
         * **Authentication** (Aktifkan metode Sign-in Email/Password).
         * **Realtime Database**.
-        * **Storage**.
     * **PENTING:** Buka tab **Realtime Database** dan ubah Aturan Keamanan (Security Rules) agar dapat dibaca/ditulis (untuk pengembangan):
       ```json
       {
@@ -72,6 +81,7 @@ Untuk menjalankan proyek ini secara lokal, ikuti langkah-langkah berikut:
         }
       }
       ```
+      *(Catatan: Untuk produksi, Anda harus menggunakan aturan keamanan yang lebih ketat).*
 
 4.  **Sync dan Jalankan**
     * Tunggu Android Studio menyelesaikan sinkronisasi Gradle.
@@ -80,3 +90,7 @@ Untuk menjalankan proyek ini secara lokal, ikuti langkah-langkah berikut:
 ## 🤝 Kontribusi
 
 Kontribusi sangat diterima! Silakan fork repositori ini dan ajukan *pull request* untuk setiap perbaikan atau penambahan fitur.
+
+## 📄 Lisensi
+
+[TENTUKAN LISENSI ANDA DI_SINI - misal: MIT, Apache 2.0]
